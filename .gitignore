@@ -1,0 +1,6 @@
+build-blake
+build-dilithium
+build-kyber
+*.swp
+tags
+
