@@ -1,2 +1,2 @@
-Main-class: network.beechat.Main
+Main-class: network.beechat.Blake3JNIx86Test
 
