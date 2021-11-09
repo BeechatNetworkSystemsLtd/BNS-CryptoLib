@@ -1,4 +1,4 @@
-## Kyber JNI wrapper test
+## Blake3 JNI wrapper test
 
 For run this test you must make main build in `../README.md` instructions.
 
