@@ -70,9 +70,7 @@ elseif(UNIX)
 endif()
 
 add_library(blake3_arm32_jni SHARED ${BLAKE3_SRCS})
-add_library(blake3_arm64_jni SHARED ${BLAKE3_SRCS})
 
-target_compile_definitions(blake3_arm64_jni PUBLIC BLAKE3_USE_NEON=1)
 
 add_custom_command(
   TARGET blake3_x86_jni POST_BUILD
@@ -122,31 +120,9 @@ elseif(UNIX)
   )
 endif()
 
-add_custom_command(
-  TARGET blake3_arm64_jni POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/Release/arm64
-)
-if (MSVC)
-  add_custom_command(
-    TARGET blake3_arm64_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "blake3_arm64_jni.dll" "${CMAKE_BINARY_DIR}/Release/arm64"
-    COMMENT "Making Release: blake3_arm32_jni.dll"
-  )
-elseif(MSYS OR MINGW)
-  add_custom_command(
-    TARGET blake3_arm64_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_arm64_jni.dll" "${CMAKE_BINARY_DIR}/Release/arm64"
-    COMMENT "Making Release: libblake3_arm64_jni.dll"
-  )
-elseif(UNIX)
-  add_custom_command(
-    TARGET blake3_arm64_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_arm64_jni.so" "${CMAKE_BINARY_DIR}/Release/arm64"
-    COMMENT "Making Release: libblake3_arm64_jni.so"
-  )
-endif()
-
-add_dependencies(blake3_arm64_jni blake3_jni)
 add_dependencies(blake3_arm32_jni blake3_jni)
 add_dependencies(blake3_x86_jni blake3_jni)
+
+include(arm64.cmake)
+
 

@@ -68,6 +68,10 @@ public class Blake3 {
         update_native(input.getBytes(), input.length());
     }
 
+    public void update(byte[] input, int len) {
+        update_native(input, len);
+    }
+
     public String finalize(int size) {
         return finalize(size, 0L);
     }
