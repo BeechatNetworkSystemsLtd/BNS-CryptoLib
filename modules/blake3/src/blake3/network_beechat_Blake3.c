@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdbool.h>
 #include <string.h>
+#include <stdlib.h>
 
 #include "network_beechat_Blake3.h"
 #include "blake3_impl.h"
