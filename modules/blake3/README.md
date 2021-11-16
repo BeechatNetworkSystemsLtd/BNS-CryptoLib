@@ -1,6 +1,6 @@
 # Blake3-JNI
 
-This repository contains the reference implementation of the [Blake3](https://github.com/BLAKE3-team/BLAKE3) key encapsulation mechanism, Cryptography algorithms usable through Java Native Interface wrappers.
+This repository contains the reference implementation of the [Blake3](https://github.com/BLAKE3-team/BLAKE3) hash algorithm usable through Java Native Interface wrappers for x86 and ARM.
 
 ## Build
 
