@@ -1,5 +1,9 @@
 #!/bin/bash
 
+rm -rf build-blake
+rm -rf build-kyber
+rm -rf build-dilithium
+
 mkdir -p build-blake
 cd build-blake
 cmake ../modules/blake3
