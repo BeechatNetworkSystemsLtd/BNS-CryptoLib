@@ -57,7 +57,17 @@ else()
   add_compile_options(-O3 -fomit-frame-pointer)
 endif()
 
-include(x86.cmake)
-include(arm64.cmake)
-include(arm32.cmake)
+include(ExternalProject)
+
+ExternalProject_Add(blake3jni_arm32
+  PREFIX blake3jni_arm32
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/arm32"
+  CMAKE_CACHE_ARGS -Darm32_toolchain:PATH=${CMAKE_SOURCE_DIR}/../../toolchain/arm-linux-gnueabihf
+  INSTALL_COMMAND ""
+)
+
+add_dependencies(blake3jni_arm32 blake3_jni)
+#include(x86.cmake)
+#include(arm64.cmake)
+#include(arm32.cmake)
 

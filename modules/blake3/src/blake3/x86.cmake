@@ -1,4 +1,3 @@
-
 if(MSVC)
     add_library(blake3_x86_jni SHARED ${BLAKE3_SRCS} ${BLAKE3_X86_MSVC_SRCS})
 elseif(MSYS OR MINGW)

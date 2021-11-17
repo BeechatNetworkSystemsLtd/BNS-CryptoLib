@@ -1,3 +1,8 @@
+project(blake3jni_arm64 C ASM)
+
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
 SET(CMAKE_FIND_ROOT_PATH ../../../../toolchain/aarch64-linux-gnu)
 
 add_library(blake3_arm64_jni SHARED ${BLAKE3_SRCS})
