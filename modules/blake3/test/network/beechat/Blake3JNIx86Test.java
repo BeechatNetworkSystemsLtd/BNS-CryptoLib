@@ -110,7 +110,7 @@ public class Blake3JNIx86Test {
             }
             temptime = System.currentTimeMillis() - start;
             cout += String.format("%7d ms |", temptime);
-            writer.write(String.format("%d,", temptime));
+            writer.write(String.format("%d", temptime));
             writer.append('\n');
             writer.flush();
 
