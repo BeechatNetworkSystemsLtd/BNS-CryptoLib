@@ -42,7 +42,16 @@ ExternalProject_Add(blake3jni_x86
   INSTALL_COMMAND ""
 )
 
+ExternalProject_Add(blake3jni_android
+  PREFIX blake3jni_android
+  SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/cmake/android"
+  CMAKE_CACHE_ARGS -Drelease_dir:PATH=${release_directory}
+                   -Dndk:PATH=${CMAKE_SOURCE_DIR}/../../toolchain/android-ndk-r13b
+  INSTALL_COMMAND ""
+)
+
 add_dependencies(blake3jni_arm32 blake3_jni)
 add_dependencies(blake3jni_arm64 blake3_jni)
 add_dependencies(blake3jni_x86 blake3_jni)
+add_dependencies(blake3jni_android blake3_jni)
 

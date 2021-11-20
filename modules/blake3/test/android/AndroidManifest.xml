@@ -4,7 +4,7 @@
           versionCode="1"
           versionName="0.1">
     <uses-sdk android:minSdkVersion="21"/>
-    <application android:label="Kyber Test">
+    <application android:label="Blake3 Test">
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
