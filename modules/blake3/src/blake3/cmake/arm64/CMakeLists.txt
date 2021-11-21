@@ -17,31 +17,31 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-add_library(blake3_arm64_jni SHARED ${BLAKE3_SRCS})
+add_library(blake3_jni SHARED ${BLAKE3_SRCS})
 
-target_compile_definitions(blake3_arm64_jni PUBLIC BLAKE3_USE_NEON=1)
+target_compile_definitions(blake3_jni PUBLIC BLAKE3_USE_NEON=1)
 
 add_custom_command(
-  TARGET blake3_arm64_jni POST_BUILD
+  TARGET blake3_jni POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E make_directory ${release_dir}/arm64
 )
 if (MSVC)
   add_custom_command(
     TARGET blake3_arm64_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "blake3_arm64_jni.dll" "${release_dir}/arm64"
-    COMMENT "Making Release: blake3_arm32_jni.dll"
+    COMMAND ${CMAKE_COMMAND} -E copy "blake3_jni.dll" "${release_dir}/arm64"
+    COMMENT "Making Release: blake3_jni.dll (arm64)"
   )
 elseif(MSYS OR MINGW)
   add_custom_command(
-    TARGET blake3_arm64_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_arm64_jni.dll" "${release_dir}/arm64"
-    COMMENT "Making Release: libblake3_arm64_jni.dll"
+    TARGET blake3_jni POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_jni.dll" "${release_dir}/arm64"
+    COMMENT "Making Release: libblake3_jni.dll (arm64)"
   )
 elseif(UNIX)
   add_custom_command(
-    TARGET blake3_arm64_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_arm64_jni.so" "${release_dir}/arm64"
-    COMMENT "Making Release: libblake3_arm64_jni.so"
+    TARGET blake3_jni POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_jni.so" "${release_dir}/arm64"
+    COMMENT "Making Release: libblake3_jni.so (arm64)"
   )
 endif()
 

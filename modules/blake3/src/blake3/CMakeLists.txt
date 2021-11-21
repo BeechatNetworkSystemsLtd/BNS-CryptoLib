@@ -55,3 +55,10 @@ add_dependencies(blake3jni_arm64 blake3_jni)
 add_dependencies(blake3jni_x86 blake3_jni)
 add_dependencies(blake3jni_android blake3_jni)
 
+add_dependencies(blake3_multiarch_libs blake3jni_arm32)
+add_dependencies(blake3_multiarch_libs blake3jni_arm64)
+add_dependencies(blake3_multiarch_libs blake3jni_x86)
+add_dependencies(blake3_multiarch_libs blake3jni_android)
+
+add_dependencies(blake3_android_libs blake3jni_android)
+add_dependencies(blake3_x86_libs blake3jni_x86)

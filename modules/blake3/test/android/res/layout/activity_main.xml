@@ -6,10 +6,24 @@
     android:gravity="top"
     android:orientation="vertical">
 
-    <TextView
+    <HorizontalScrollView android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scrollHorizontally="true"
+            android:typeface = "monospace"
+            android:id="@+id/my_text"/>
+    </HorizontalScrollView>
+    <Button
+        android:id="@+id/refrbutton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scrollbars = "vertical"
-        android:id="@+id/my_text"/>
+        android:gravity="center_horizontal|center"
+        android:layout_gravity="center_horizontal|center"
+        android:textSize="30px"
+        android:padding="20px"
+        android:layout_marginTop="20dip"
+        android:text="Start Test"/>
 </LinearLayout>
 

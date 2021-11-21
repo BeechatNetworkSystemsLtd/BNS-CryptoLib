@@ -21,7 +21,7 @@ public class Blake3 {
     byte flags;
 
     static {
-        System.loadLibrary("blake3_x86_jni");
+        System.loadLibrary("blake3_jni");
     }
 
     private native int init();

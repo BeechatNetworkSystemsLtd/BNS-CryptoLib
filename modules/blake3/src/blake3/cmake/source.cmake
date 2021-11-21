@@ -7,6 +7,9 @@ set(BLAKE3_SRCS
     ../../blake3_dispatch.c
     ../../blake3_portable.c
 )
+set(BLAKE3_ARM_SRCS
+    ../../blake3_neon.c
+)
 set(BLAKE3_X86_UNIX_SRCS
     ../../blake3_sse2_x86-64_unix.S
     ../../blake3_sse41_x86-64_unix.S

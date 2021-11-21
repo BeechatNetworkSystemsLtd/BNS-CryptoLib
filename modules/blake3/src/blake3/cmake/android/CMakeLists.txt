@@ -17,33 +17,33 @@ set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
-add_library(blake3_android_jni SHARED ${BLAKE3_SRCS})
+add_library(blake3_jni SHARED ${BLAKE3_SRCS} ${BLAKE3_ARM_SRCS})
 
-target_compile_options(blake3_android_jni PUBLIC -march=armv8-a -fPIC -Wno-missing-braces
-    -Wno-missing-field-initializers)
-target_compile_definitions(blake3_android_jni PUBLIC BLAKE3_USE_NEON=1)
+target_compile_options(blake3_jni PUBLIC -march=armv8-a -fPIC -Wno-missing-braces
+    -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-redundant-decls)
+target_compile_definitions(blake3_jni PUBLIC BLAKE3_USE_NEON=1)
 
 add_custom_command(
-  TARGET blake3_android_jni POST_BUILD
+  TARGET blake3_jni POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E make_directory ${release_dir}/android
 )
 if (MSVC)
   add_custom_command(
-    TARGET blake3_android_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "blake3_android_jni.dll" "${release_dir}/android"
-    COMMENT "Making Release: blake3_android_jni.dll"
+    TARGET blake3_jni POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy "blake3_jni.dll" "${release_dir}/android"
+    COMMENT "Making Release: blake3_jni.dll (android)"
   )
 elseif(MSYS OR MINGW)
   add_custom_command(
-    TARGET blake3_android_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_android_jni.dll" "${release_dir}/android"
-    COMMENT "Making Release: libblake3_android_jni.dll"
+    TARGET blake3_jni POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_jni.dll" "${release_dir}/android"
+    COMMENT "Making Release: libblake3_jni.dll (android)"
   )
 elseif(UNIX)
   add_custom_command(
-    TARGET blake3_android_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_android_jni.so" "${release_dir}/android"
-    COMMENT "Making Release: libblake3_android_jni.so"
+    TARGET blake3_jni POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy "libblake3_jni.so" "${release_dir}/android"
+    COMMENT "Making Release: libblake3_jni.so (android)"
   )
 endif()
 
