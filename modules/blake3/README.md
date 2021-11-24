@@ -11,8 +11,22 @@ cd build
 cmake ..
 make
 ```
-The build result will be available in the `/build/Release` directory.
-Or you can just open the project in Visual Studio and build it inside the IDE.
+This is the general build procedure but you can use a specific targets not included in
+general build. Any builds will be available in the `/build/Release` directory.
+
+
+### Build targets
+
+| Target      | Description                | Result (build/Release) |
+|:------------|:--------------------------:| ----------------------:|
+| arm32       | ARM32 JNI library version  | arm32/blake3_jni.so    |
+| arm64       | ARM64 JNI library version  | arm64/blake3_jni.so    |
+| x86         | x86_64 JNI library version | x86/blake3_jni.so      |
+| android     | Android spec. build        | android/blake3_jni.so  |
+| x86test     | Comparative analysis       | diagram.png            |
+| androidtest | Comparative analysis       | Blake3Test.apk         |
+
+
 
 ## Usage
 
@@ -35,17 +49,10 @@ public static void main(String[] args) {
 ```
 When importing classes (from `jni/java`), you can change the path to the dynamic library. By default, it is set to the current startup directory. Do not forget about this parameter, because it depends on place of the library.
 
-Example for Windows:
+Example:
 ```java
 static {
-    System.loadLibrary("blake3_x86_jni.dll");
-}
-```
-
-Example for Unix-like:
-```java
-static {
-    System.loadLibrary("libblake3_x86_jni.so");
+    System.loadLibrary("blake3_jni");
 }
 ```
 
@@ -61,6 +68,6 @@ cd test/android
 ./build_apk.sh
 ```
 
-Result APK will be test/android/build/Blake3Test.apk.
+Result APK will be build/Release/Blake3Test.apk.
 Just install and run.
 

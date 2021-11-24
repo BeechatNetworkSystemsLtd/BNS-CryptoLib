@@ -60,5 +60,7 @@ add_dependencies(blake3_multiarch_libs blake3jni_arm64)
 add_dependencies(blake3_multiarch_libs blake3jni_x86)
 add_dependencies(blake3_multiarch_libs blake3jni_android)
 
+add_dependencies(blake3_arm64_libs blake3jni_arm64)
+add_dependencies(blake3_arm32_libs blake3jni_arm32)
 add_dependencies(blake3_android_libs blake3jni_android)
 add_dependencies(blake3_x86_libs blake3jni_x86)

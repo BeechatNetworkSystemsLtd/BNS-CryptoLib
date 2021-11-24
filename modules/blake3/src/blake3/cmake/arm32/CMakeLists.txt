@@ -18,7 +18,8 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 
-add_library(blake3_jni SHARED ${BLAKE3_SRCS})
+add_library(blake3_jni SHARED ${BLAKE3_SRCS} ${BLAKE3_ARM_SRCS})
+target_compile_options(blake3_jni PUBLIC -Wall -march=armv7-a -marm -mfpu=neon)
 
 add_custom_command(
   TARGET blake3_jni POST_BUILD

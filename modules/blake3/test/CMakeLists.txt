@@ -98,5 +98,39 @@ add_custom_command(
     COMMENT "Making Release Blake3Test.apk ..."
 )
 
+add_custom_target(blake3Arm64Test)
+
+add_custom_command(
+    TARGET blake3Arm64Test POST_BUILD
+    COMMAND mkdir -p ${CMAKE_BINARY_DIR}/Release/temp
+    COMMENT "Making a temp dir for arm64 test ..."
+)
+add_custom_command(
+    TARGET blake3Arm64Test POST_BUILD
+    COMMAND cp ${CMAKE_SOURCE_DIR}/test/jdk.tar.gz ${CMAKE_BINARY_DIR}/Release/temp
+    COMMENT "Install arm64 JDK ..."
+)
+add_custom_command(
+    TARGET blake3Arm64Test POST_BUILD
+    COMMAND cp Blake3Test.jar ${CMAKE_BINARY_DIR}/Release/temp
+    COMMENT "Install a test JAR ..."
+)
+add_custom_command(
+    TARGET blake3Arm64Test POST_BUILD
+    COMMAND cp ${CMAKE_BINARY_DIR}/Release/arm64/libblake3_jni.so ${CMAKE_BINARY_DIR}/Release/temp
+    COMMENT "Install a lib ..."
+)
+add_custom_command(
+    TARGET blake3Arm64Test POST_BUILD
+    COMMAND cd ${CMAKE_BINARY_DIR}/Release && tar -czvf arm64_test.tar.gz temp
+    COMMENT "Compressing an archive ..."
+)
+add_custom_command(
+    TARGET blake3Arm64Test POST_BUILD
+    COMMAND rm -rf ${CMAKE_BINARY_DIR}/Release/temp
+)
+
+add_dependencies(blake3Arm64Test blake3_arm64_libs)
+add_dependencies(blake3Arm64Test Blake3Test)
 add_dependencies(blake3AndroidTest blake3_android_libs)
 
