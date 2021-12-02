@@ -29,6 +29,45 @@ JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1native
   (JNIEnv *, jobject, jbyteArray, jint);
 
 /*
+* Class:     network_beechat_Blake3
+* Method:    update_native
+* Signature: ([BI)V
+*/
+JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1critical_1native_1raw
+  (JNIEnv *env, jclass obj, jbyteArray _context, jint _len
+  , jintArray key
+  , jint cv_stack_len
+  , jbyteArray cv_stack
+  , jintArray cv
+  , jlong chunk_counter
+  , jbyteArray buf
+  , jbyte buf_len
+  , jbyte blocks_compressed
+  , jbyte flags
+  , jlongArray outputs);
+
+/*
+ * Class:     network_beechat_Blake3
+ * Method:    update_native
+ * Signature: ([BI)V
+ */
+JNIEXPORT void JNICALL
+JavaCritical_network_beechat_Blake3_update_1critical_1native_1raw(
+    jbyte *_context
+  , jint _len
+  , jint *key
+  , jint cv_stack_len
+  , jbyte *cv_stack
+  , jint *cv
+  , jlong chunk_counter
+  , jbyte *buf
+  , jbyte buf_len
+  , jbyte blocks_compressed
+  , jbyte flags
+  , jlong *outputs
+);
+
+/*
  * Class:     network_beechat_Blake3
  * Method:    finalize_seek_native
  * Signature: (J[BI)V

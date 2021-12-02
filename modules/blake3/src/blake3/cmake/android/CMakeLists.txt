@@ -19,7 +19,7 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 
 add_library(blake3_jni SHARED ${BLAKE3_SRCS} ${BLAKE3_ARM_SRCS})
 
-target_compile_options(blake3_jni PUBLIC -march=armv8-a -fPIC -Wno-missing-braces
+target_compile_options(blake3_jni PUBLIC -march=armv8-a -Ofast -Wno-missing-braces
     -Wno-missing-field-initializers -Wno-missing-prototypes -Wno-redundant-decls)
 target_compile_definitions(blake3_jni PUBLIC BLAKE3_USE_NEON=1)
 

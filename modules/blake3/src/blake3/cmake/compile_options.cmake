@@ -13,7 +13,8 @@ else()
   add_compile_options(-Wall -fPIC -Wextra -Wpedantic -Werror -Wno-array-bounds
     -Wno-unused-function)
   add_compile_options(-Wshadow -Wpointer-arith)
-  add_compile_options(-Wno-missing-braces -Wno-missing-field-initializers)
+  add_compile_options(-Wno-missing-braces -Wno-missing-field-initializers
+-Wno-unused-parameter)
   add_compile_options(-O3 -fomit-frame-pointer)
 endif()
 

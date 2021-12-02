@@ -5,6 +5,7 @@ import network.beechat.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 import java.security.MessageDigest;
 import java.lang.Thread;
 
@@ -26,7 +27,6 @@ class PrimeThread extends Thread {
     }
 
     public void run() {
-        // compute primes larger than minPrime
         long mult = 4;
         long exp_num = 6;
         long kilobyte = 1 << 10;
@@ -34,22 +34,17 @@ class PrimeThread extends Thread {
         long gigabyte = megabyte << 10;
         long size = 16; // 1 Mb
         long buffer_size = 65536; // 64 kb
+        Blake3 hasher = null;
 
         byte[] buffer = new byte[(int)buffer_size];
-        //FileWriter writer = new FileWriter("test_results.csv", false);
 
         new Random().nextBytes(buffer);
         buffer_size *= size;
         String cout = new String();
 
-
         std_output += "  Size  |   Blake3   |  SHA-256  |  SHA-512  |   SHA-1   |\n";
         std_output += "--------|------------|-----------|-----------|-----------|\n";
         h.post(updateProgress);
-        //text.setText(std_output);
-        //text.invalidate();
-        //writer.write("size,blake3,sha256,sha512,sha1");
-        //writer.append('\n');
 
         for (int ii = 0; ii < exp_num; ii++, size *= mult, buffer_size *= mult) {
             if (buffer_size >= gigabyte) {
@@ -64,14 +59,18 @@ class PrimeThread extends Thread {
             else {
                 cout += String.format("%4d b | ", buffer_size);
             }
-            //writer.write(String.format("%d,", buffer_size));
 
-            long start = System.currentTimeMillis();
             try {
-                Blake3 hasher = new Blake3();
+                hasher = new Blake3();
+            } catch (Exception ex) {
+                System.out.println("Exception: " + ex.getMessage());
+                ex.printStackTrace();
+            }
 
+            long start = System.nanoTime();
+            try {
                 for (long i = 0; i < size; i++) {
-                    hasher.update(buffer, buffer.length);
+                    hasher.update(buffer);
                 }
 
                 hasher.finalize(Blake3.OUT_LEN);
@@ -79,9 +78,8 @@ class PrimeThread extends Thread {
                 System.out.println("Exception: " + ex.getMessage());
                 ex.printStackTrace();
             }
-            long temptime = System.currentTimeMillis() - start;
+            long temptime = TimeUnit.MILLISECONDS.convert(System.nanoTime() - start, TimeUnit.NANOSECONDS);
             cout += String.format("%7d ms |", temptime);
-            //writer.write(String.format("%d,", temptime));
 
             start = System.currentTimeMillis();
             try {
@@ -98,7 +96,6 @@ class PrimeThread extends Thread {
             }
             temptime = System.currentTimeMillis() - start;
             cout += String.format("%7d ms |", temptime);
-            //writer.write(String.format("%d,", temptime));
 
             start = System.currentTimeMillis();
             try {
@@ -115,7 +112,6 @@ class PrimeThread extends Thread {
             }
             temptime = System.currentTimeMillis() - start;
             cout += String.format("%7d ms |", temptime);
-            //writer.write(String.format("%d,", temptime));
 
             start = System.currentTimeMillis();
             try {
@@ -132,14 +128,9 @@ class PrimeThread extends Thread {
             }
             temptime = System.currentTimeMillis() - start;
             cout += String.format("%7d ms |\n", temptime);
-            //writer.write(String.format("%d", temptime));
-            ////writer.append('\n');
-            //writer.flush();
 
             std_output += cout;
             h.post(updateProgress);
-            //text.setText(std_output);
-            //text.invalidate();
             cout = "";
         }
         std_output += "\nDone.";

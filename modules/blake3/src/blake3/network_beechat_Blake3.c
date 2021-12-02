@@ -65,14 +65,12 @@ JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1derive_1key(
   , jcharArray _context
   , jint _len
 ){
+    jboolean is_copy;
     blake3_hasher context_hasher;
     blake3_hasher self = { 0 };
     int len  = _len;
 
-    char *context = (char *)malloc(len);
-    jbyte *context_j = (jbyte *)malloc(len);
-    (*env)->GetByteArrayRegion(env, _context, 0, len, context_j);
-    for (size_t i = 0; i < 8; i++) context[i] = context_j[i];
+    char *context = (*env)->GetPrimitiveArrayCritical(env, _context, &is_copy);
 
     hasher_init_base(&context_hasher, IV, DERIVE_KEY_CONTEXT);
     blake3_hasher_update(&context_hasher, context, len);
@@ -82,29 +80,25 @@ JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1derive_1key(
     load_key_words(context_key, context_key_words);
     hasher_init_base(&self, context_key_words, DERIVE_KEY_MATERIAL);
 
-    free(context);
-    free(context_j);
+    (*env)->ReleasePrimitiveArrayCritical(env, _context, context, JNI_ABORT);
     c_to_java_object(&self, env, obj);
     return 0;
 }
 
+
 JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1native
   (JNIEnv *env, jobject obj, jbyteArray _context, jint _len)
 {
+    jboolean is_copy;
     blake3_hasher self = { 0 };
     java_to_c_object(&self, env, obj);
     int len  = _len;
-
-    char *context = (char *)malloc(len);
-    jbyte *context_j = (jbyte *)malloc(len);
-    (*env)->GetByteArrayRegion(env, _context, 0, len, context_j);
-    for (size_t i = 0; i < 8; i++) context[i] = context_j[i];
+    char *context = (*env)->GetPrimitiveArrayCritical(env, _context, &is_copy);
 
     blake3_hasher_update(&self, context, len);
 
-    free(context);
-    free(context_j);
     c_to_java_object(&self, env, obj);
+    (*env)->ReleasePrimitiveArrayCritical(env, _context, context, JNI_ABORT);
 }
 
 
@@ -112,20 +106,18 @@ JNIEXPORT void JNICALL Java_network_beechat_Blake3_finalize_1seek_1native
   (JNIEnv *env, jobject obj, jlong _seek, jbyteArray _output, jint _outlen)
 {
     blake3_hasher self = { 0 };
+    jboolean is_copy;
     uint64_t seek = _seek;
     size_t outlen = _outlen;
-    uint8_t *output = (uint8_t *)malloc(outlen);
-    jbyte *output_j = (jbyte *)malloc(outlen);
 
     java_to_c_object(&self, env, obj);
 
+    uint8_t *output = (*env)->GetPrimitiveArrayCritical(env, _output, &is_copy);
+
     blake3_hasher_finalize_seek(&self, seek, output, outlen);
-    for (size_t i = 0; i < outlen; i++) output_j[i] = output[i];
-    (*env)->SetByteArrayRegion(env, _output, 0, outlen, output_j);
 
     c_to_java_object(&self, env, obj);
-    free(output);
-    free(output_j);
+    (*env)->ReleasePrimitiveArrayCritical(env, _output, output, JNI_ABORT);
 }
 
 
@@ -133,9 +125,7 @@ void java_to_c_object(blake3_hasher *str, JNIEnv *env, jobject obj)
 {
     jfieldID fid = { 0 };
     jclass cls;
-    jobject temp;
-    jint key_j[8], cv_j[8];
-    jbyte buf_j[BLAKE3_BLOCK_LEN], cv_stack_j[(BLAKE3_MAX_DEPTH + 1) * BLAKE3_OUT_LEN];
+    jboolean is_copy;
     jbyte cv_stack_len_j, buf_len_j, blocks_compressed_j, flags_j;
     jlong chunk_counter_j;
 
@@ -147,14 +137,14 @@ void java_to_c_object(blake3_hasher *str, JNIEnv *env, jobject obj)
     cls = (*env)->GetObjectClass(env, obj);
 
     fid = (*env)->GetFieldID(env, cls, "key", "[I");
-    temp = (*env)->GetObjectField(env, obj, fid);
-    (*env)->GetIntArrayRegion(env, (jintArray)temp, 0, 8, key_j);
-    for (size_t i = 0; i < 8; ++i) str->key[i] = key_j[i];
+    jintArray key_a = (*env)->GetObjectField(env, obj, fid);
+    jint *key_c = (*env)->GetPrimitiveArrayCritical(env, key_a, &is_copy);
+    memcpy(str->key, key_c, 8 * sizeof(int));
 
     fid = (*env)->GetFieldID(env, cls, "cv", "[I");
-    temp = (*env)->GetObjectField(env, obj, fid);
-    (*env)->GetIntArrayRegion(env, (jintArray)temp, 0, 8, cv_j);
-    for (size_t i = 0; i < 8; ++i) str->chunk.cv[i] = cv_j[i];
+    jintArray cv_a = (*env)->GetObjectField(env, obj, fid);
+    jint *cv_c = (*env)->GetPrimitiveArrayCritical(env, cv_a, &is_copy);
+    memcpy(str->chunk.cv, cv_c, 8 * sizeof(int));
 
     fid = (*env)->GetFieldID(env, cls, "cv_stack_len", "I");
     cv_stack_len_j = (*env)->GetByteField(env, obj, fid);
@@ -165,9 +155,9 @@ void java_to_c_object(blake3_hasher *str, JNIEnv *env, jobject obj)
     str->chunk.chunk_counter = chunk_counter_j;
 
     fid = (*env)->GetFieldID(env, cls, "buf", "[B");
-    temp = (*env)->GetObjectField(env, obj, fid);
-    (*env)->GetByteArrayRegion(env, (jbyteArray)temp, 0, BLAKE3_BLOCK_LEN, buf_j);
-    for (size_t i = 0; i < BLAKE3_BLOCK_LEN; ++i) str->chunk.buf[i] = buf_j[i];
+    jbyteArray buf_a = (*env)->GetObjectField(env, obj, fid);
+    jbyte *buf_c = (*env)->GetPrimitiveArrayCritical(env, buf_a, &is_copy);
+    memcpy(str->chunk.buf, buf_c, BLAKE3_BLOCK_LEN);
 
     fid = (*env)->GetFieldID(env, cls, "buf_len", "B");
     buf_len_j = (*env)->GetByteField(env, obj, fid);
@@ -182,19 +172,21 @@ void java_to_c_object(blake3_hasher *str, JNIEnv *env, jobject obj)
     str->chunk.flags = flags_j;
 
     fid = (*env)->GetFieldID(env, cls, "cv_stack", "[B");
-    temp = (*env)->GetObjectField(env, obj, fid);
-    (*env)->GetByteArrayRegion(env, (jbyteArray)temp, 0, (BLAKE3_MAX_DEPTH + 1) * BLAKE3_OUT_LEN, cv_stack_j);
-    for (size_t i = 0; i < (BLAKE3_MAX_DEPTH + 1) * BLAKE3_OUT_LEN; ++i) str->cv_stack[i] = cv_stack_j[i];
+    jbyteArray cv_stack_a = (*env)->GetObjectField(env, obj, fid);
+    jbyte *cv_stack_c = (*env)->GetPrimitiveArrayCritical(env, cv_stack_a, &is_copy);
+    memcpy(str->cv_stack, cv_stack_c, (BLAKE3_MAX_DEPTH + 1) * BLAKE3_OUT_LEN);
 
+    (*env)->ReleasePrimitiveArrayCritical(env, key_a, key_c, JNI_ABORT);
+    (*env)->ReleasePrimitiveArrayCritical(env, cv_a, cv_c, JNI_ABORT);
+    (*env)->ReleasePrimitiveArrayCritical(env, buf_a, buf_c, JNI_ABORT);
+    (*env)->ReleasePrimitiveArrayCritical(env, cv_stack_a, cv_stack_c, JNI_ABORT);
 }
 
 void c_to_java_object(blake3_hasher *str, JNIEnv *env, jobject obj)
 {
     jfieldID fid = { 0 };
+    jboolean is_copy;
 
-    jobject temp;
-    jint key_j[8], cv_j[8];
-    jbyte buf_j[BLAKE3_BLOCK_LEN], cv_stack_j[(BLAKE3_MAX_DEPTH + 1) * BLAKE3_OUT_LEN];
     jbyte cv_stack_len_j, buf_len_j, blocks_compressed_j, flags_j;
     jlong chunk_counter_j;
 
@@ -206,14 +198,14 @@ void c_to_java_object(blake3_hasher *str, JNIEnv *env, jobject obj)
     jclass cls = (*env)->GetObjectClass(env, obj);
 
     fid = (*env)->GetFieldID(env, cls, "key", "[I");
-    temp = (*env)->GetObjectField(env, obj, fid);
-    for (size_t i = 0; i < 8; ++i) key_j[i] = str->key[i];
-    (*env)->SetIntArrayRegion(env, (jintArray)temp, 0, 8, key_j);
+    jintArray key_a = (*env)->GetObjectField(env, obj, fid);
+    jint *key_c = (*env)->GetPrimitiveArrayCritical(env, key_a, &is_copy);
+    memcpy(key_c, str->key, 8 * sizeof(int));
 
     fid = (*env)->GetFieldID(env, cls, "cv", "[I");
-    temp = (*env)->GetObjectField(env, obj, fid);
-    for (size_t i = 0; i < 8; ++i) cv_j[i] = str->chunk.cv[i];
-    (*env)->SetIntArrayRegion(env, (jintArray)temp, 0, 8, cv_j);
+    jintArray cv_a = (*env)->GetObjectField(env, obj, fid);
+    jint *cv_c = (*env)->GetPrimitiveArrayCritical(env, cv_a, &is_copy);
+    memcpy(cv_c, str->chunk.cv, 8 * sizeof(int));
 
     fid = (*env)->GetFieldID(env, cls, "cv_stack_len", "I");
     cv_stack_len_j = str->cv_stack_len;
@@ -224,9 +216,9 @@ void c_to_java_object(blake3_hasher *str, JNIEnv *env, jobject obj)
     (*env)->SetLongField(env, obj, fid, chunk_counter_j);
 
     fid = (*env)->GetFieldID(env, cls, "buf", "[B");
-    temp = (*env)->GetObjectField(env, obj, fid);
-    for (size_t i = 0; i < BLAKE3_BLOCK_LEN; ++i) buf_j[i] = str->chunk.buf[i];
-    (*env)->SetByteArrayRegion(env, (jbyteArray)temp, 0, BLAKE3_BLOCK_LEN, buf_j);
+    jbyteArray buf_a = (*env)->GetObjectField(env, obj, fid);
+    jbyte *buf_c = (*env)->GetPrimitiveArrayCritical(env, buf_a, &is_copy);
+    memcpy(buf_c, str->chunk.buf, BLAKE3_BLOCK_LEN);
 
     fid = (*env)->GetFieldID(env, cls, "buf_len", "B");
     buf_len_j = str->chunk.buf_len;
@@ -241,9 +233,14 @@ void c_to_java_object(blake3_hasher *str, JNIEnv *env, jobject obj)
     (*env)->SetByteField(env, obj, fid, flags_j);
 
     fid = (*env)->GetFieldID(env, cls, "cv_stack", "[B");
-    temp = (*env)->GetObjectField(env, obj, fid);
-    for (size_t i = 0; i < (BLAKE3_MAX_DEPTH + 1) * BLAKE3_OUT_LEN; ++i) cv_stack_j[i] = str->cv_stack[i];
-    (*env)->SetByteArrayRegion(env, (jbyteArray)temp, 0, (BLAKE3_MAX_DEPTH + 1) * BLAKE3_OUT_LEN, cv_stack_j);
+    jbyteArray cv_stack_a = (*env)->GetObjectField(env, obj, fid);
+    jbyte *cv_stack_c = (*env)->GetPrimitiveArrayCritical(env, cv_stack_a, &is_copy);
+    memcpy(cv_stack_c, str->cv_stack, (BLAKE3_MAX_DEPTH + 1) * BLAKE3_OUT_LEN);
+
+    (*env)->ReleasePrimitiveArrayCritical(env, key_a, key_c, JNI_ABORT);
+    (*env)->ReleasePrimitiveArrayCritical(env, cv_a, cv_c, JNI_ABORT);
+    (*env)->ReleasePrimitiveArrayCritical(env, buf_a, buf_c, JNI_ABORT);
+    (*env)->ReleasePrimitiveArrayCritical(env, cv_stack_a, cv_stack_c, JNI_ABORT);
 
 }
 
