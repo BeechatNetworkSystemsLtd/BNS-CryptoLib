@@ -21,7 +21,7 @@
 *
 * Returns 0 (success)
 **************************************************/
-JNIEXPORT jint JNICALL Java_network_beechat_DilithiumAes_crypto_1sign_1keypair
+JNIEXPORT jint JNICALL Java_com_beechat_network_DilithiumAes_crypto_1sign_1keypair
     (JNIEnv *env, jobject thisObject, jbyteArray _pk, jbyteArray _sk)
 {
   uint8_t seedbuf[2*SEEDBYTES + CRHBYTES];
@@ -215,7 +215,7 @@ rej:
 *
 * Returns 0 (success)
 **************************************************/
-JNIEXPORT jint JNICALL Java_network_beechat_DilithiumAes_crypto_1sign
+JNIEXPORT jint JNICALL Java_com_beechat_network_DilithiumAes_crypto_1sign
     (JNIEnv *env, jobject thisObject, jbyteArray _sm, jbyteArray _m, jlong _mlen, jbyteArray _sk)
 {
   size_t i;
@@ -346,7 +346,7 @@ int crypto_sign_verify(const uint8_t *sig,
 *
 * Returns 0 if signed message could be verified correctly and -1 otherwise
 **************************************************/
-JNIEXPORT jint JNICALL Java_network_beechat_DilithiumAes_crypto_1sign_1open
+JNIEXPORT jint JNICALL Java_com_beechat_network_DilithiumAes_crypto_1sign_1open
     (JNIEnv *env, jobject thisObject, jbyteArray _m, jbyteArray _sm, jlong _smlen, jbyteArray _pk)
 {
   size_t i;

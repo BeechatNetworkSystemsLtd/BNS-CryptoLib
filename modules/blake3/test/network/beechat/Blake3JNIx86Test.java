@@ -1,4 +1,4 @@
-package network.beechat;
+package com.beechat.network;
 
 import java.io.*;
 import java.util.Random;

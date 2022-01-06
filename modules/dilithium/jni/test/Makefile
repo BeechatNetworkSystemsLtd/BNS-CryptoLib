@@ -4,7 +4,7 @@
 
 all: clean
 	@mkdir bin
-	@javac -d bin network/beechat/*.java
+	@javac -d bin network/beechat/*.java ../jni/java/*.java
 	@jar -cmf manifest.mf sign.jar -C ./bin .
 
 clean:

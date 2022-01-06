@@ -90,17 +90,9 @@ if (UNIX)
   )
 endif()
 
-if (MSVC OR MSYS OR MINGW)
-  add_custom_command(
-    TARGET kyber512_ref_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/jni/java/ref_win" "${CMAKE_BINARY_DIR}/Release/ref"
-    COMMENT "Making Release: Java Classes"
-  )
-else()
-  add_custom_command(
-    TARGET kyber512_ref_jni POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/jni/java/ref_lin" "${CMAKE_BINARY_DIR}/Release/ref"
-    COMMENT "Making Release: Java Classes"
-  )
-endif()
+add_custom_command(
+  TARGET kyber512_ref_jni POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/jni/java" "${CMAKE_BINARY_DIR}/Release/ref"
+  COMMENT "Making Release: Java Classes"
+)
 

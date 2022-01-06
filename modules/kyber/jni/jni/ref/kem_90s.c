@@ -8,7 +8,7 @@
 #include "randombytes.h"
 
 /*************************************************
-* Name:        Java_network_beechat_Kyber512_190s_crypto_1kem_1keypair
+* Name:        Java_com_beechat_network_Kyber512_190s_crypto_1kem_1keypair
 *
 * Description: Generates public and private key
 *              for CCA-secure Kyber key encapsulation mechanism
@@ -20,7 +20,7 @@
 *
 * Returns 0 (success)
 **************************************************/
-JNIEXPORT jint JNICALL Java_network_beechat_Kyber512_190s_crypto_1kem_1keypair
+JNIEXPORT jint JNICALL Java_com_beechat_network_Kyber512_190s_crypto_1kem_1keypair
     (JNIEnv *env, jobject thisObject, jbyteArray pk, jbyteArray sk)
 {
   size_t i;
@@ -54,7 +54,7 @@ JNIEXPORT jint JNICALL Java_network_beechat_Kyber512_190s_crypto_1kem_1keypair
 }
 
 /*************************************************
-* Name:        Java_network_beechat_Kyber512_190s_crypto_1kem_1enc
+* Name:        Java_com_beechat_network_Kyber512_190s_crypto_1kem_1enc
 *
 * Description: Generates cipher text and shared
 *              secret for given public key
@@ -68,7 +68,7 @@ JNIEXPORT jint JNICALL Java_network_beechat_Kyber512_190s_crypto_1kem_1keypair
 *
 * Returns 0 (success)
 **************************************************/
-JNIEXPORT jint JNICALL Java_network_beechat_Kyber512_190s_crypto_1kem_1enc
+JNIEXPORT jint JNICALL Java_com_beechat_network_Kyber512_190s_crypto_1kem_1enc
     (JNIEnv *env, jobject thisObject, jbyteArray ct, jbyteArray ss, jbyteArray pk)
 {
   uint8_t buf[2*KYBER_SYMBYTES];
@@ -117,7 +117,7 @@ JNIEXPORT jint JNICALL Java_network_beechat_Kyber512_190s_crypto_1kem_1enc
 }
 
 /*************************************************
-* Name:        Java_network_beechat_Kyber512_190s_crypto_1kem_1dec
+* Name:        Java_com_beechat_network_Kyber512_190s_crypto_1kem_1dec
 *
 * Description: Generates shared secret for given
 *              cipher text and private key
@@ -133,7 +133,7 @@ JNIEXPORT jint JNICALL Java_network_beechat_Kyber512_190s_crypto_1kem_1enc
 *
 * On failure, ss will contain a pseudo-random value.
 **************************************************/
-JNIEXPORT jint JNICALL Java_network_beechat_Kyber512_190s_crypto_1kem_1dec
+JNIEXPORT jint JNICALL Java_com_beechat_network_Kyber512_190s_crypto_1kem_1dec
   (JNIEnv *env, jobject thisObject, jbyteArray ss, jbyteArray ct, jbyteArray sk)
 {
   size_t i;

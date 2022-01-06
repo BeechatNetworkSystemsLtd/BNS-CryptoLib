@@ -5,7 +5,7 @@ import java.util.Arrays;
 import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
-import network.beechat.*;
+import com.beechat.network.*;
 import android.text.method.ScrollingMovementMethod;
 
 public class MainActivity extends Activity {

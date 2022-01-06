@@ -23,7 +23,7 @@ INLINE void hasher_init_base(blake3_hasher *self, const uint32_t key[8],
   self->cv_stack_len = 0;
 }
 
-JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init(
+JNIEXPORT jint JNICALL Java_com_beechat_network_Blake3_init(
     JNIEnv *env
   , jobject obj
 ){
@@ -38,7 +38,7 @@ JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init(
     return 0;
 }
 
-JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1keyed(
+JNIEXPORT jint JNICALL Java_com_beechat_network_Blake3_init_1keyed(
     JNIEnv *env
   , jobject obj
   , jbyteArray _key
@@ -58,7 +58,7 @@ JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1keyed(
     return 0;
 }
 
-JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1derive_1key(
+JNIEXPORT jint JNICALL Java_com_beechat_network_Blake3_init_1derive_1key(
     JNIEnv *env
   , jobject obj
   , jcharArray _context
@@ -85,7 +85,7 @@ JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1derive_1key(
 }
 
 
-JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1native
+JNIEXPORT void JNICALL Java_com_beechat_network_Blake3_update_1native
   (JNIEnv *env, jobject obj, jbyteArray _context, jint _len)
 {
     jboolean is_copy;
@@ -101,7 +101,7 @@ JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1native
 }
 
 
-JNIEXPORT void JNICALL Java_network_beechat_Blake3_finalize_1seek_1native
+JNIEXPORT void JNICALL Java_com_beechat_network_Blake3_finalize_1seek_1native
   (JNIEnv *env, jobject obj, jlong _seek, jbyteArray _output, jint _outlen)
 {
     blake3_hasher self = { 0 };
@@ -240,6 +240,5 @@ void c_to_java_object(blake3_hasher *str, JNIEnv *env, jobject obj)
     (*env)->ReleasePrimitiveArrayCritical(env, cv_a, cv_c, JNI_ABORT);
     (*env)->ReleasePrimitiveArrayCritical(env, buf_a, buf_c, JNI_ABORT);
     (*env)->ReleasePrimitiveArrayCritical(env, cv_stack_a, cv_stack_c, JNI_ABORT);
-
 }
 

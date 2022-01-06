@@ -1,11 +1,11 @@
-package network.beechat;
+package com.beechat.network;
 
 public class Kyber512 {
 
-    static final int KYBER_PUBLICKEYBYTES = 800;
-    static final int KYBER_SECRETKEYBYTES = 1632;
-    static final int KYBER_SSBYTES = 32;
-    static final int KYBER_CIPHERTEXTBYTES = 768;
+    public static final int KYBER_PUBLICKEYBYTES = 800;
+    public static final int KYBER_SECRETKEYBYTES = 1632;
+    public static final int KYBER_SSBYTES = 32;
+    public static final int KYBER_CIPHERTEXTBYTES = 768;
 
     static {
         System.loadLibrary("kyber512_ref_jni");

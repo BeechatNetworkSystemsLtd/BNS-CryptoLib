@@ -4,8 +4,8 @@
 
 #include "blake3.h"
 
-#ifndef _Included_network_beechat_Blake3
-#define _Included_network_beechat_Blake3
+#ifndef _Included_com_beechat_network_Blake3
+#define _Included_com_beechat_network_Blake3
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -17,7 +17,7 @@ void c_to_java_object(blake3_hasher *str, JNIEnv *env, jobject obj);
  * Method:    init
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init
+JNIEXPORT jint JNICALL Java_com_beechat_network_Blake3_init
   (JNIEnv *, jobject);
 
 /*
@@ -25,7 +25,7 @@ JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init
  * Method:    update_native
  * Signature: ([BI)V
  */
-JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1native
+JNIEXPORT void JNICALL Java_com_beechat_network_Blake3_update_1native
   (JNIEnv *, jobject, jbyteArray, jint);
 
 /*
@@ -33,7 +33,7 @@ JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1native
 * Method:    update_native
 * Signature: ([BI)V
 */
-JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1critical_1native_1raw
+JNIEXPORT void JNICALL Java_com_beechat_network_Blake3_update_1critical_1native_1raw
   (JNIEnv *env, jclass obj, jbyteArray _context, jint _len
   , jintArray key
   , jint cv_stack_len
@@ -52,7 +52,7 @@ JNIEXPORT void JNICALL Java_network_beechat_Blake3_update_1critical_1native_1raw
  * Signature: ([BI)V
  */
 JNIEXPORT void JNICALL
-JavaCritical_network_beechat_Blake3_update_1critical_1native_1raw(
+JavaCritical_com_beechat_network_Blake3_update_1critical_1native_1raw(
     jbyte *_context
   , jint _len
   , jint *key
@@ -72,18 +72,18 @@ JavaCritical_network_beechat_Blake3_update_1critical_1native_1raw(
  * Method:    finalize_seek_native
  * Signature: (J[BI)V
  */
-JNIEXPORT void JNICALL Java_network_beechat_Blake3_finalize_1seek_1native
+JNIEXPORT void JNICALL Java_com_beechat_network_Blake3_finalize_1seek_1native
   (JNIEnv *, jobject, jlong, jbyteArray, jint);
 
 
-JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1keyed(
+JNIEXPORT jint JNICALL Java_com_beechat_network_Blake3_init_1keyed(
     JNIEnv *env
   , jobject obj
   , jbyteArray key
 );
 
 
-JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1derive_1key(
+JNIEXPORT jint JNICALL Java_com_beechat_network_Blake3_init_1derive_1key(
     JNIEnv *env
   , jobject obj
   , jcharArray context

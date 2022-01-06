@@ -1,6 +1,6 @@
 #!/bin/bash
 
-HOME="../../toolchains"
+HOME="../../../../../toolchain"
 SDK="${HOME}/android-sdk-linux"
 BUILD_TOOLS="${SDK}/build-tools/25.0.0"
 PLATFORM="${SDK}/platforms/android-21"
@@ -62,7 +62,7 @@ mkdir -p build/apk/lib/arm64-v8a
 
 javac -source 1.7 -target 1.7 -bootclasspath "${JAVA_HOME}/jre/lib/rt.jar" \
     -classpath "${PLATFORM}/android.jar" -d build/obj \
-    build/gen/net/test/R.java java/net/test/*.java
+    build/gen/net/test/R.java java/net/test/*.java ../../jni/java/*.java
 
 "${BUILD_TOOLS}/dx" --dex --output=build/apk/classes.dex build/obj/
 

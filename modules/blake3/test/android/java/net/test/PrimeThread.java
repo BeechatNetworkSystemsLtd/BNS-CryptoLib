@@ -1,6 +1,6 @@
 package net.test;
 
-import network.beechat.*;
+import com.beechat.network.*;
 
 import java.io.*;
 import java.util.Arrays;

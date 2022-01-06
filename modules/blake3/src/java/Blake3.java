@@ -1,4 +1,4 @@
-package network.beechat;
+package com.beechat.network;
 
 public class Blake3 {
 

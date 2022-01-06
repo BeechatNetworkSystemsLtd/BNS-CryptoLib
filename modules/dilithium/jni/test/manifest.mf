@@ -1,2 +1,2 @@
-Main-class: network.beechat.Main
+Main-class: com.beechat.network.Main
 
