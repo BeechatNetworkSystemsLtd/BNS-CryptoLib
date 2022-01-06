@@ -45,7 +45,6 @@ JNIEXPORT jint JNICALL Java_network_beechat_Blake3_init_1keyed(
 ){
     uint32_t key_words[8];
     blake3_hasher self = { 0 };
-    //java_to_c_object(&self, env, obj);
 
     uint8_t key[8] = { 0 };
     jbyte key_j[8] = { 0 };

@@ -5,8 +5,8 @@ set(FIPS202_SRCS ../ref/fips202.c)
 set(AES256CTR_SRCS ../ref/aes256ctr.c)
 set(SHA2_SRCS ../ref/sha256.c ../ref/sha512.c)
 
-set(CMAKE_C_COMPILER ../../../toolchains/android-ndk-r13b/toolchains/aarch64-linux-android-4.9/prebuilt/linux-x86_64/bin/aarch64-linux-android-gcc)
-set(CMAKE_SYSROOT ../../../toolchains/android-ndk-r13b/platforms/android-21/arch-arm64)
+set(CMAKE_C_COMPILER ../../../../../../toolchain/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang)
+set(CMAKE_SYSROOT ../../../../../../toolchain/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/sysroot)
 
 if(MSYS OR MINGW)
 else()
