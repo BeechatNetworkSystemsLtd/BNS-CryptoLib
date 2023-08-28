@@ -5,14 +5,15 @@ set(FIPS202_SRCS ../ref/fips202.c)
 set(AES256CTR_SRCS ../ref/aes256ctr.c)
 
 
-set(CMAKE_C_COMPILER ../../../../../../toolchain/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/bin/aarch64-linux-android29-clang)
+set(CMAKE_C_COMPILER
+../../../../../../toolchain/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/bin/armv7a-linux-androideabi29-clang)
 set(CMAKE_SYSROOT ../../../../../../toolchain/android-ndk-r21e/toolchains/llvm/prebuilt/linux-x86_64/sysroot)
 
 if(MSYS OR MINGW)
 else()
     add_compile_options(-fPIC -shared -std=c99 -o build/apk/lib/arm64-v8a/libdilithium2_ref_jni.so)
     add_compile_options(-D DILITHIUM_MODE=2)
-    add_compile_options(-march=armv8-a)
+    add_compile_options(-march=armv7-a)
 endif()
 
 add_library(dilithium2_ref_jni_android SHARED ${DILITHIUM_FIPS202_SRCS} ${FIPS202_SRCS})
